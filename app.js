@@ -14,7 +14,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.post("/welcome", auth, (req, res) => {
+app.get("/welcome", auth, (req, res) => {
   res.status(200).send("Welcome ❤️😊");
 });
 
@@ -41,8 +41,8 @@ app.post("/register", async (req, res) => {
 
     // create user in our database
     const user = await User.create({
-      first_name: first_name,
-      last_name: last_name,
+      first_name,
+      last_name,
       email: email.toLowerCase(), // Sanitize: convert email to lowercase
       password: encryptedPassword,
     });
@@ -73,7 +73,7 @@ app.post("/login", async (req, res) => {
     const { email, password } = req.body;
 
     // Validate user input
-    if (!(email && passord)) {
+    if (!(email && password)) {
       res.status(400).send("All input is required");
     }
 
@@ -95,7 +95,7 @@ app.post("/login", async (req, res) => {
     }
     res.status(400).send("Invalid Credentials");
   } catch (error) {
-    console.log(err);
+    console.log(error);
   }
 });
 
